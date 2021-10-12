@@ -11,7 +11,7 @@ type Props = {
 export default function Layout({ children }: Props): ReactElement {
   return (
     <div>
-      <Navbar sticky={false} />
+      <Navbar sticky={false} title={"assert(cat)"} />
       <main>{children}</main>
       <Footer />
     </div>

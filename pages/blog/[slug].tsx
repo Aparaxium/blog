@@ -9,7 +9,7 @@ import {
   vscDarkPlus,
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
-import { PROJECTS_DIRECTORY } from "../../lib/constants";
+import { POSTS_DIRECTORY } from "../../lib/constants";
 import { getFileNames, getPost, Post } from "../../lib/posts";
 
 type PropsWrapper = {
@@ -63,7 +63,7 @@ export default function Project({ post }: Props): ReactElement {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getFileNames(PROJECTS_DIRECTORY);
+  const paths = getFileNames(POSTS_DIRECTORY);
   return {
     paths,
     fallback: false,
@@ -76,10 +76,7 @@ export const getStaticProps: GetStaticProps = async ({
   if (params === undefined) {
     throw new Error("Undefined static props in pages/projects/[slug].tsx");
   } else {
-    const fullPath: string = path.join(
-      PROJECTS_DIRECTORY,
-      params.slug as string
-    );
+    const fullPath: string = path.join(POSTS_DIRECTORY, params.slug as string);
     const postData: Post = getPost(fullPath + ".mdx");
     const props = {
       props: {

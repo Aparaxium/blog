@@ -3,8 +3,6 @@ import matter from "gray-matter";
 import yaml from "js-yaml";
 import path from "path";
 
-import { POSTS_DIRECTORY } from "./constants";
-
 export type Post = {
   data: PostData;
   readonly content: string;
@@ -16,6 +14,7 @@ export type PostData = {
   readonly date: string;
   readonly description: string;
   readonly imgSrc: string;
+  readonly path: string;
 };
 
 type Params = {
@@ -30,7 +29,8 @@ export function getFileNames(directory: string): Params[] {
   return fileNames.map((fileName) => {
     return {
       params: {
-        slug: fileName.replace(/\.mdx$/, ""),
+        //remove extension
+        slug: path.parse(fileName).name,
       },
     };
   });
@@ -43,7 +43,6 @@ export async function markdownToHtml(markdown: string): Promise<string> {
 }
 */
 
-//could refactor into one parameter, fullpath.
 export function getPost(fullPath: string): Post {
   //const fullPath: string = path.join(directory, `${filename}.mdx`);
   const fileContents: string = fs.readFileSync(fullPath, "utf8");
@@ -71,13 +70,13 @@ export function getPost(fullPath: string): Post {
   return postData;
 }
 
-export function getAllPostMeta(directory: string): PostData[] {
+export function getMeta(directory: string): PostData[] {
   // Get file names
   const fileNames: string[] = fs.readdirSync(directory);
 
   //get post data
   const allPostsData = fileNames.map((fileName) => {
-    const fullPath: string = path.join(POSTS_DIRECTORY, fileName);
+    const fullPath: string = path.join(directory, fileName);
     const fileContents: string = fs.readFileSync(fullPath, "utf8");
     const matterResult: matter.GrayMatterFile<string> = matter(fileContents, {
       engines: {
@@ -85,12 +84,17 @@ export function getAllPostMeta(directory: string): PostData[] {
           yaml.load(s, { schema: yaml.JSON_SCHEMA }) as Record<string, unknown>,
       },
     });
+
+    const splitPath: string[] = fullPath.split(path.sep);
+    const urlPath: string = path.join(...splitPath.slice(1, -1)) + "/";
+
     const postData: PostData = {
       slug: path.parse(fileName).name,
       title: matterResult.data.title,
       date: matterResult.data.date,
       description: matterResult.data.description,
       imgSrc: matterResult.data.imgSrc,
+      path: urlPath,
     };
     return postData;
   });

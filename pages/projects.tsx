@@ -2,8 +2,8 @@ import { GetStaticProps } from "next";
 import { ReactElement } from "react";
 
 import Imagecard from "../components/ImageCard";
-import { POSTS_DIRECTORY } from "../lib/constants";
-import { getAllPostMeta,PostData } from "../lib/projects";
+import { PROJECTS_DIRECTORY } from "../lib/constants";
+import { getMeta, PostData } from "../lib/posts";
 
 type PropsWrapper = {
   readonly props: Props;
@@ -26,7 +26,7 @@ export default function Projects({ post }: Props): ReactElement {
             title={d.title}
             description={d.description}
             imgSrc={d.imgSrc}
-            href={"/projects/" + d.slug}
+            href={d.path + d.slug}
             row={false}
           />
         ))}
@@ -37,7 +37,7 @@ export default function Projects({ post }: Props): ReactElement {
 
 export const getStaticProps: GetStaticProps =
   async (): Promise<PropsWrapper> => {
-    const post: PostData[] = getAllPostMeta(POSTS_DIRECTORY);
+    const post: PostData[] = getMeta(PROJECTS_DIRECTORY);
     return {
       props: {
         post,

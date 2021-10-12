@@ -1,4 +1,5 @@
 import { IconMenu } from "@tabler/icons";
+import Image from "next/image";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
 
@@ -6,6 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 
 type Props = {
   readonly sticky?: boolean;
+  readonly title: string;
 };
 
 const headerNavLinks = [
@@ -14,7 +16,7 @@ const headerNavLinks = [
   { href: "/contact", title: "Contact" },
 ];
 
-export default function NavBar({ sticky }: Props): ReactElement {
+export default function NavBar({ sticky, title }: Props): ReactElement {
   const [active, setActive] = useState(false);
 
   const handleClick = () => {
@@ -28,7 +30,7 @@ export default function NavBar({ sticky }: Props): ReactElement {
       }`}
     >
       <Link href="/">
-        <a className="pl-4 text-xl font-bold uppercase">Winchester</a>
+        <a className="pl-4 text-xl font-bold">{title}</a>
       </Link>
       <button
         onClick={handleClick}

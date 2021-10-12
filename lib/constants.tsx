@@ -1,4 +1,20 @@
-import path from "path";
+import {
+  IconBrandFacebook,
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+  IconBrandTwitter,
+  IconBrandYoutube,
+} from "@tabler/icons";
 
-//cwd can fail, https://stackoverflow.com/questions/10265798/determine-project-root-from-a-running-node-js-application
-export const POSTS_DIRECTORY = path.join(process.cwd(), "content/projects");
+export const PROJECTS_DIRECTORY = "./content/projects";
+export const POSTS_DIRECTORY = "./content/blog";
+
+export const footerLinks = [
+  { icon: IconBrandFacebook, href: "https://www.facebook.com" },
+  { icon: IconBrandTwitter, href: "https://www.twitter.com" },
+  { icon: IconBrandInstagram, href: "https://www.instagram.com" },
+  { icon: IconBrandGithub, href: "https://www.github.com" },
+  { icon: IconBrandLinkedin, href: "https://www.linkedin.com" },
+  { icon: IconBrandYoutube, href: "https://www.youtube.com" },
+];
