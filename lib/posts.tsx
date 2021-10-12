@@ -1,11 +1,17 @@
 import fs from "fs";
 import matter from "gray-matter";
 import yaml from "js-yaml";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import path from "path";
 
 export type Post = {
-  data: PostData;
+  readonly data: PostData;
   readonly content: string;
+};
+
+export type SearializedPost = {
+  readonly data: PostData;
+  readonly content: MDXRemoteSerializeResult;
 };
 
 export type PostData = {
@@ -35,13 +41,6 @@ export function getFileNames(directory: string): Params[] {
     };
   });
 }
-
-/*
-export async function markdownToHtml(markdown: string): Promise<string> {
-  const processedMarkdown = await remark().use(remarkHtml).process(markdown);
-  return processedMarkdown.toString();
-}
-*/
 
 export function getPost(fullPath: string): Post {
   //const fullPath: string = path.join(directory, `${filename}.mdx`);
