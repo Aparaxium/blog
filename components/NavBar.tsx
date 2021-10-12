@@ -1,5 +1,4 @@
 import { IconMenu } from "@tabler/icons";
-import Image from "next/image";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
 

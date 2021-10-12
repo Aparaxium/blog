@@ -1,5 +1,6 @@
-import { footerLinks } from "../lib/constants";
 import { ReactElement } from "react";
+
+import { footerLinks } from "../lib/constants";
 
 export default function Footer(): ReactElement {
   const components = footerLinks.map((site) => {

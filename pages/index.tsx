@@ -2,8 +2,6 @@ import { GetStaticProps } from "next";
 import { ReactElement } from "react";
 
 import ImageCard from "../components/ImageCard";
-import Landing from "../components/Landing";
-import Textcard from "../components/TextCard";
 import { POSTS_DIRECTORY } from "../lib/constants";
 import { getMeta, PostData } from "../lib/posts";
 
