@@ -6,21 +6,18 @@ import path from "path";
 
 export type Post = {
   readonly data: PostData;
-  readonly content: string;
+  readonly content: string | MDXRemoteSerializeResult;
 };
 
-export type SearializedPost = {
-  readonly data: PostData;
-  readonly content: MDXRemoteSerializeResult;
-};
-
+//TODO find a way to serialize excerpt in index without mutability?
 export type PostData = {
   readonly slug: string;
   readonly title: string;
   readonly date: string;
   readonly description: string;
   readonly imgSrc: string;
-  readonly path: string;
+  excerpt?: string | MDXRemoteSerializeResult;
+  readonly path?: string;
 };
 
 type Params = {
@@ -82,6 +79,7 @@ export function getMeta(directory: string): PostData[] {
         yaml: (s) =>
           yaml.load(s, { schema: yaml.JSON_SCHEMA }) as Record<string, unknown>,
       },
+      excerpt: true,
     });
 
     const splitPath: string[] = fullPath.split(path.sep);
@@ -94,6 +92,7 @@ export function getMeta(directory: string): PostData[] {
       description: matterResult.data.description,
       imgSrc: matterResult.data.imgSrc,
       path: urlPath,
+      excerpt: matterResult.excerpt,
     };
     return postData;
   });
