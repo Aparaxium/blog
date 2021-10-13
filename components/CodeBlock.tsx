@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 import { ReactElement, useEffect, useState } from "react";
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
   prism,
   vscDarkPlus,
