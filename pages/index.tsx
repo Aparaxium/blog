@@ -1,45 +1,38 @@
 import { GetStaticProps } from "next";
+import { serialize } from "next-mdx-remote/serialize";
 import { ReactElement } from "react";
 
-import ImageCard from "../components/ImageCard";
+import BlogPreview from "../components/BlogPreview";
 import { POSTS_DIRECTORY } from "../lib/constants";
 import { getMeta, PostData } from "../lib/posts";
 
 type PropsWrapper = {
-  readonly props: Props;
+  readonly props: Posts;
 };
 
-type Props = {
-  readonly post: PostData[];
+type Posts = {
+  readonly posts: PostData[];
 };
 
-export default function Home({ post }: Props): ReactElement {
+export default function Home({ posts }: Posts): ReactElement {
   return (
     <>
-      <div className="container grid mx-auto sm:grid-cols-1 md:grid-cols-2">
-        {post.map((d: PostData) => (
-          <div className="m-6" key={d.title}>
-            <ImageCard
-              title={d.title}
-              description={d.description}
-              imgSrc={d.imgSrc}
-              href={d.path + d.slug}
-              row={false}
-              quality={35}
-            />
-          </div>
-        ))}
-      </div>
+      <BlogPreview posts={posts} />
     </>
   );
 }
 
 export const getStaticProps: GetStaticProps =
   async (): Promise<PropsWrapper> => {
-    const post: PostData[] = getMeta(POSTS_DIRECTORY);
+    const posts: PostData[] = getMeta(POSTS_DIRECTORY);
+
+    for (let i = 0; i < posts.length; i++) {
+      posts[i].excerpt = await serialize(posts[i].excerpt as string);
+    }
+
     return {
       props: {
-        post,
+        posts,
       },
     };
   };
