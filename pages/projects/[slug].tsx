@@ -1,19 +1,19 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { MDXRemote } from "next-mdx-remote";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
 import { ReactElement } from "react";
 
 import CodeBlock from "../../components/CodeBlock";
 import { PROJECTS_DIRECTORY } from "../../lib/constants";
-import { getFileNames, getPost, Post, SearializedPost } from "../../lib/posts";
+import { getFileNames, getPost, Post } from "../../lib/posts";
 
 type PropsWrapper = {
   readonly props: Props;
 };
 
 type Props = {
-  readonly post: SearializedPost;
+  readonly post: Post;
 };
 
 const components = {
@@ -22,12 +22,15 @@ const components = {
 
 export default function Project({ post }: Props): ReactElement {
   return (
-    <div className="container py-6 mx-auto divide-y divide-black">
+    <div className=" py-6 mx-auto divide-y divide-black">
       <h1 className="py-6 text-3xl font-extrabold tracking-tight text-center sm:text-4xl md:text-6xl">
         {post.data.title}
       </h1>
       <div className="flex-col mx-auto prose dark:prose-dark">
-        <MDXRemote {...post.content} components={components} />
+        <MDXRemote
+          {...(post.content as MDXRemoteSerializeResult)}
+          components={components}
+        />
       </div>
     </div>
   );
@@ -52,7 +55,7 @@ export const getStaticProps: GetStaticProps = async ({
       (params.slug as string) + ".mdx"
     );
     const postData: Post = getPost(fullPath);
-    const mdxSource = await serialize(postData.content);
+    const mdxSource = await serialize(postData.content as string);
     const props = {
       props: {
         post: {
