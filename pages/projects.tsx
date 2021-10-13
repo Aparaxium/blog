@@ -15,7 +15,7 @@ type Props = {
 
 export default function Projects({ post }: Props): ReactElement {
   return (
-    <div className="container py-6 mx-auto text-center divide-y divide-black">
+    <div className="py-6 mx-auto text-center divide-y divide-black">
       <h1 className="py-6 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-6xl">
         What We Have Done.
       </h1>
