@@ -5,7 +5,7 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
 
-const POSTS_PER_PAGE = 2;
+import { POSTS_PER_PAGE } from "./constants";
 
 export type PageData = {
   readonly posts: PostData[];
@@ -106,9 +106,6 @@ export async function getMeta(
       slicedPostsData[i].excerpt as string
     );
   }
-
-  //console.log("lib");
-  //slicedPostsData.map((a) => console.log(a));
 
   return { maxPages, posts: slicedPostsData };
 }

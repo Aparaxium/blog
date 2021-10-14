@@ -18,3 +18,5 @@ export const footerLinks = [
   { icon: IconBrandLinkedin, href: "https://www.linkedin.com" },
   { icon: IconBrandYoutube, href: "https://www.youtube.com" },
 ];
+
+export const POSTS_PER_PAGE = 2;
