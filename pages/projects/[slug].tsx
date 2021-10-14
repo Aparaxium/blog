@@ -37,7 +37,14 @@ export default function Project({ post }: Props): ReactElement {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getFileNames(PROJECTS_DIRECTORY);
+  const fileNames = getFileNames(PROJECTS_DIRECTORY);
+  const paths = fileNames.map((fileName) => {
+    return {
+      params: {
+        slug: path.parse(fileName).name,
+      },
+    };
+  });
   return {
     paths,
     fallback: false,

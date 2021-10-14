@@ -37,7 +37,14 @@ export default function Blog({ post }: Props): ReactElement {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getFileNames(POSTS_DIRECTORY);
+  const fileNames = getFileNames(POSTS_DIRECTORY);
+  const paths = fileNames.map((fileName) => {
+    return {
+      params: {
+        slug: path.parse(fileName).name,
+      },
+    };
+  });
   return {
     paths,
     fallback: false,

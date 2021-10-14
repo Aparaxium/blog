@@ -27,16 +27,9 @@ type Params = {
 };
 
 //currently gets filename as slug
-export function getFileNames(directory: string): Params[] {
+export function getFileNames(directory: string): string[] {
   const fileNames: string[] = fs.readdirSync(directory);
-  return fileNames.map((fileName) => {
-    return {
-      params: {
-        //remove extension
-        slug: path.parse(fileName).name,
-      },
-    };
-  });
+  return fileNames;
 }
 
 export function getPost(fullPath: string): Post {
