@@ -20,13 +20,6 @@ export type PostData = {
   readonly path?: string;
 };
 
-type Params = {
-  params: {
-    slug: string;
-  };
-};
-
-//currently gets filename as slug
 export function getFileNames(directory: string): string[] {
   const fileNames: string[] = fs.readdirSync(directory);
   return fileNames;
