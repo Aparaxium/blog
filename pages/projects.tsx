@@ -3,14 +3,14 @@ import { ReactElement } from "react";
 
 import Imagecard from "../components/ImageCard";
 import { PROJECTS_DIRECTORY } from "../lib/constants";
-import { getMeta, PostData } from "../lib/posts";
+import { getMeta, PageData, PostData } from "../lib/posts";
 
 type PropsWrapper = {
   readonly props: Props;
 };
 
 type Props = {
-  readonly post: PostData[];
+  readonly post: PageData;
 };
 
 export default function Projects({ post }: Props): ReactElement {
@@ -20,7 +20,7 @@ export default function Projects({ post }: Props): ReactElement {
         What We Have Done.
       </h1>
       <div className="flex flex-col mx-auto">
-        {post.map((d: PostData) => (
+        {post.posts.map((d: PostData) => (
           <Imagecard
             key={d.title}
             title={d.title}
@@ -37,7 +37,7 @@ export default function Projects({ post }: Props): ReactElement {
 
 export const getStaticProps: GetStaticProps =
   async (): Promise<PropsWrapper> => {
-    const post: PostData[] = getMeta(PROJECTS_DIRECTORY);
+    const post = await getMeta(PROJECTS_DIRECTORY, 0);
     return {
       props: {
         post,

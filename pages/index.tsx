@@ -1,35 +1,33 @@
 import { GetStaticProps } from "next";
-import { serialize } from "next-mdx-remote/serialize";
 import { ReactElement } from "react";
+import { SWRConfig } from "swr";
 
 import BlogPreview from "../components/BlogPreview";
 import { POSTS_DIRECTORY } from "../lib/constants";
-import { getMeta, PostData } from "../lib/posts";
+import { getMeta, PageData } from "../lib/posts";
 
 type PropsWrapper = {
   readonly props: Posts;
 };
 
 type Posts = {
-  readonly posts: PostData[];
+  readonly posts: PageData;
 };
 
-export default function Home({ posts }: Posts): ReactElement {
+//TODO fix typing
+export default function Home({ posts }: any): ReactElement {
   return (
     <>
-      <BlogPreview posts={posts} />
+      <SWRConfig value={posts}>
+        <BlogPreview />
+      </SWRConfig>
     </>
   );
 }
 
 export const getStaticProps: GetStaticProps =
   async (): Promise<PropsWrapper> => {
-    const posts: PostData[] = getMeta(POSTS_DIRECTORY);
-
-    for (let i = 0; i < posts.length; i++) {
-      posts[i].excerpt = await serialize(posts[i].excerpt as string);
-    }
-
+    const posts = await getMeta(POSTS_DIRECTORY, 0);
     return {
       props: {
         posts,

@@ -2,7 +2,15 @@ import fs from "fs";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
+
+const POSTS_PER_PAGE = 2;
+
+export type PageData = {
+  readonly posts: PostData[];
+  readonly maxPages: number;
+};
 
 export type Post = {
   readonly data: PostData;
@@ -52,7 +60,10 @@ export function getPost(fullPath: string): Post {
   return postData;
 }
 
-export function getMeta(directory: string): PostData[] {
+export async function getMeta(
+  directory: string,
+  page: number
+): Promise<PageData> {
   // Get file names
   const fileNames: string[] = fs.readdirSync(directory);
 
@@ -83,5 +94,21 @@ export function getMeta(directory: string): PostData[] {
     return postData;
   });
 
-  return allPostsData;
+  const maxPages = allPostsData.length / POSTS_PER_PAGE;
+
+  const slicedPostsData = allPostsData.slice(
+    POSTS_PER_PAGE * Number(page),
+    POSTS_PER_PAGE * Number(page) + POSTS_PER_PAGE
+  );
+
+  for (let i = 0; i < slicedPostsData.length; i++) {
+    slicedPostsData[i].excerpt = await serialize(
+      slicedPostsData[i].excerpt as string
+    );
+  }
+
+  //console.log("lib");
+  //slicedPostsData.map((a) => console.log(a));
+
+  return { maxPages, posts: slicedPostsData };
 }
