@@ -4,7 +4,7 @@ import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { ReactElement, useEffect, useState } from "react";
 import useSWR from "swr";
 
-import { PostData } from "../lib/posts";
+import { PageData, PostData } from "../lib/posts";
 import CodeBlock from "./CodeBlock";
 import Date from "./Date";
 
@@ -12,18 +12,18 @@ const components = {
   code: CodeBlock,
 };
 
-export default function BlogPreview(): ReactElement {
+export default function BlogPreview(page: any): ReactElement {
   const router = useRouter();
   const [pageIndex, setPageIndex] = useState(0);
 
   const fetcher = (...args: Parameters<typeof fetch>) =>
     fetch(...args).then((response) => response.json());
+  console.log(page.posts);
 
   // The API URL includes the page index, which is a React state.
-  const { data } = useSWR(`/api/blog/${pageIndex}`, fetcher);
-  if (!data) return <div>loading...</div>;
-
-  console.log(pageIndex, data);
+  const { data } = useSWR(`/api/blog/${pageIndex}`, fetcher, {
+    fallbackData: page.posts,
+  });
 
   useEffect(() => {
     if (router.isReady && router.query.page) {

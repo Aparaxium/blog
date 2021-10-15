@@ -13,8 +13,5 @@ export default async function handler(
 
   const posts = await getMeta(POSTS_DIRECTORY, Number(page));
 
-  //console.log("API");
-  //posts.posts.map((a) => console.log(a));
-
   res.status(200).json(posts);
 }

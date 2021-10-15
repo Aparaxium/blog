@@ -11,15 +11,15 @@ type PropsWrapper = {
 };
 
 type Posts = {
-  readonly posts: PageData;
+  readonly page: PageData;
 };
 
 //TODO fix typing
-export default function Home({ posts }: any): ReactElement {
+export default function Home({ page }: any): ReactElement {
   return (
     <>
-      <SWRConfig value={posts}>
-        <BlogPreview />
+      <SWRConfig value={page}>
+        <BlogPreview posts={page} />
       </SWRConfig>
     </>
   );
@@ -27,10 +27,10 @@ export default function Home({ posts }: any): ReactElement {
 
 export const getStaticProps: GetStaticProps =
   async (): Promise<PropsWrapper> => {
-    const posts = await getMeta(POSTS_DIRECTORY, 0);
+    const page = await getMeta(POSTS_DIRECTORY, 0);
     return {
       props: {
-        posts,
+        page,
       },
     };
   };
