@@ -42,7 +42,7 @@ export default function NavBar({ sticky, title }: Props): ReactElement {
           active ? "" : "hidden"
         } w-full lg:inline-flex lg:flex-grow lg:w-auto`}
       >
-        <div className="flex flex-col w-full items-end lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto lg:items-center lg:h-auto">
+        <div className="flex flex-row w-full justify-center lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto lg:items-center lg:h-auto">
           <div className="py-2 mx-3">
             <ThemeToggle />
           </div>
