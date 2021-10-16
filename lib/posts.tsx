@@ -95,24 +95,25 @@ export function sortPosts(posts: PostData[]) {
   return posts;
 }
 
-async function createPage(postData: PostData[], pageNumber: number) {
+function createPage(postData: PostData[], pageNumber: number) {
   const slicedPostsData = postData.slice(
     POSTS_PER_PAGE * Number(pageNumber),
     POSTS_PER_PAGE * Number(pageNumber) + POSTS_PER_PAGE
   );
 
-  for (let i = 0; i < slicedPostsData.length; i++) {
-    slicedPostsData[i].excerpt = await serialize(
-      slicedPostsData[i].excerpt as string
-    );
-  }
-
   return slicedPostsData;
 }
 
-export function getPage(
+async function serializePostExcerpts(postData: PostData[]) {
+  for (let i = 0; i < postData.length; i++) {
+    postData[i].excerpt = await serialize(postData[i].excerpt as string);
+  }
+  return postData;
+}
+
+export async function getPage(
   directory: string,
-  pageNumber: number
+  pageNumber?: number
 ): Promise<PostData[]> {
   // Get file names
   const fileNames: string[] = getFileNames(directory);
@@ -124,7 +125,12 @@ export function getPage(
 
   const sortedPostsData = sortPosts(postsData);
 
-  const page = createPage(sortedPostsData, pageNumber);
+  if (pageNumber) {
+    const page = createPage(sortedPostsData, pageNumber);
+    const serializedPage = await serializePostExcerpts(page);
+    return serializedPage;
+  }
 
-  return page;
+  const serializedPage = await serializePostExcerpts(sortedPostsData);
+  return serializedPage;
 }
