@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
@@ -8,15 +8,11 @@ import CodeBlock from "../../components/CodeBlock";
 import { POSTS_DIRECTORY } from "../../lib/constants";
 import { getFileNames, getPost, Post } from "../../lib/posts";
 
-type PropsWrapper = {
-  readonly props: Props;
-};
-
 type Props = {
   readonly post: Post;
 };
 
-const components = {
+const mdxComponents = {
   code: CodeBlock,
 };
 
@@ -29,7 +25,7 @@ export default function Blog({ post }: Props): ReactElement {
       <div className="flex-col mx-auto prose dark:prose-dark">
         <MDXRemote
           {...(post.content as MDXRemoteSerializeResult)}
-          components={components}
+          components={mdxComponents}
         />
       </div>
     </div>
@@ -53,24 +49,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({
   params,
-}): Promise<PropsWrapper> => {
+}): Promise<GetStaticPropsResult<Props>> => {
   if (params === undefined) {
     throw new Error("Undefined static props in pages/projects/[slug].tsx");
-  } else {
-    const fullPath: string = path.join(
-      POSTS_DIRECTORY,
-      (params.slug as string) + ".mdx"
-    );
-    const postData: Post = getPost(fullPath);
-    const mdxSource = await serialize(postData.content as string);
-    const props = {
-      props: {
-        post: {
-          ...postData,
-          content: mdxSource,
-        },
-      },
-    };
-    return props;
   }
+  const fullPath: string = path.join(
+    POSTS_DIRECTORY,
+    (params.slug as string) + ".mdx"
+  );
+  const postData: Post = getPost(fullPath);
+  const mdxSource = await serialize(postData.content as string);
+  const props = {
+    props: {
+      post: {
+        ...postData,
+        content: mdxSource,
+      },
+    },
+  };
+  return props;
 };

@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
@@ -8,15 +8,11 @@ import CodeBlock from "../../components/CodeBlock";
 import { PROJECTS_DIRECTORY } from "../../lib/constants";
 import { getFileNames, getPost, Post } from "../../lib/posts";
 
-type PropsWrapper = {
-  readonly props: Props;
-};
-
 type Props = {
   readonly post: Post;
 };
 
-const components = {
+const mdxComponents = {
   code: CodeBlock,
 };
 
@@ -29,7 +25,7 @@ export default function Project({ post }: Props): ReactElement {
       <div className="flex-col mx-auto prose dark:prose-dark">
         <MDXRemote
           {...(post.content as MDXRemoteSerializeResult)}
-          components={components}
+          components={mdxComponents}
         />
       </div>
     </div>
@@ -53,7 +49,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({
   params,
-}): Promise<PropsWrapper> => {
+}): Promise<GetStaticPropsResult<Props>> => {
   if (params === undefined) {
     throw new Error("Undefined static props in pages/projects/[slug].tsx");
   } else {
