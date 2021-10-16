@@ -61,7 +61,7 @@ export function getTotalPosts(directory: string): number {
 
 export function getTotalPages(directory: string): number {
   const totalPosts: number = getTotalPosts(directory);
-  return totalPosts / POSTS_PER_PAGE;
+  return Math.ceil(totalPosts / POSTS_PER_PAGE);
 }
 
 export function getPostData(directory: string, fileName: string) {
