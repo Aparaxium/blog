@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { ReactElement } from "react";
 
+import { DEFAULT_IMAGE } from "../lib/constants";
+
 type Props = {
   readonly title: string;
   readonly description: string;
-  readonly imgSrc: string;
+  readonly imgSrc?: string;
   readonly href?: string;
   readonly gradient?: boolean;
   readonly hover?: boolean;
@@ -16,12 +18,12 @@ type Props = {
 export default function ImageCard({
   title,
   description,
-  imgSrc,
+  imgSrc = DEFAULT_IMAGE,
   href = "/",
   gradient,
   hover,
   row,
-  quality = 75,
+  quality = 90,
 }: Props): ReactElement {
   return (
     <ul>
