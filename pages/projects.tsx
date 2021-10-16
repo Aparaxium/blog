@@ -11,11 +11,11 @@ type Props = {
 
 export default function Projects({ posts }: Props): ReactElement {
   return (
-    <div className="py-6 mx-auto text-center divide-y divide-black">
-      <h1 className="py-6 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-6xl">
-        What We Have Done.
+    <div className="p-4 container mx-auto text-center divide-y divide-black dark:divide-white">
+      <h1 className="p-4 mb-5 font-extrabold tracking-tight text-4xl md:text-6xl">
+        Projects
       </h1>
-      <div className="flex flex-col mx-auto">
+      <div className="p-4 grid grid-cols-1 md:grid-cols-3 mx-auto">
         {posts.map((d: PostData) => (
           <ImageCard
             key={d.title}
@@ -23,7 +23,8 @@ export default function Projects({ posts }: Props): ReactElement {
             description={d.description}
             imgSrc={d.imgSrc}
             href={d.path + d.slug}
-            row={false}
+            hover={true}
+            gradient={true}
           />
         ))}
       </div>
@@ -34,7 +35,7 @@ export default function Projects({ posts }: Props): ReactElement {
 export const getStaticProps: GetStaticProps = async (): Promise<
   GetStaticPropsResult<Props>
 > => {
-  const posts = await getPage(PROJECTS_DIRECTORY, 0);
+  const posts = await getPage(PROJECTS_DIRECTORY);
   return {
     props: {
       posts,

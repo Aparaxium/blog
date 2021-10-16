@@ -22,20 +22,16 @@ export default function ImageCard({
   href = "/",
   gradient,
   hover,
-  row,
   quality = 90,
 }: Props): ReactElement {
   return (
-    <ul>
-      <div
-        className={`flex h-72 ${row ? "flex-row " : "flex-col"} ${
-          hover ? "transform transition-all hover:-translate-y-1" : ""
-        }`}
-      >
-        <Link href={href} passHref>
-          <div
-            className={`relative cursor-pointer h-full ${row ? "w-1/2" : ""}`}
-          >
+    <ul
+      className={`w-full p-4
+      ${hover ? "transform transition-all hover:-translate-y-1" : ""} `}
+    >
+      <Link href={href} passHref>
+        <a className="flex flex-col h-64 relative cursor-pointer ">
+          <div className=" h-full">
             <Image
               title={title}
               alt={title}
@@ -43,7 +39,6 @@ export default function ImageCard({
               src={imgSrc}
               layout="fill"
               objectFit="cover"
-              objectPosition="center center"
               quality={quality}
             />
             <div
@@ -52,20 +47,14 @@ export default function ImageCard({
               }`}
             />
           </div>
-        </Link>
-        <div
-          className={`flex flex-col justify-center ml-4 divide-y divide-black dark:divide-white ${
-            row ? "w-1/2" : ""
-          }`}
-        >
-          <Link href={href} passHref>
-            <a className="items-center m-4 text-4xl font-bold text-center cursor-pointer ">
+          <div className=" flex flex-col w-full h-full absolute justify-end divide-y divide-white text-gray-100">
+            <h3 className="items-center p-2 text-4xl font-bold text-center ">
               {title}
-            </a>
-          </Link>
-          <p className="p-6 text-center">{description}</p>
-        </div>
-      </div>
+            </h3>
+            <p className="p-2 text-center truncate">{description}</p>
+          </div>
+        </a>
+      </Link>
     </ul>
   );
 }
