@@ -1,27 +1,23 @@
-import { GetStaticProps } from "next";
+import { GetStaticProps, GetStaticPropsResult } from "next";
 import { ReactElement } from "react";
 
-import Imagecard from "../components/ImageCard";
+import ImageCard from "../components/ImageCard";
 import { PROJECTS_DIRECTORY } from "../lib/constants";
-import { getMeta, PageData, PostData } from "../lib/posts";
-
-type PropsWrapper = {
-  readonly props: Props;
-};
+import { getPage, PostData } from "../lib/posts";
 
 type Props = {
-  readonly post: PageData;
+  readonly posts: PostData[];
 };
 
-export default function Projects({ post }: Props): ReactElement {
+export default function Projects({ posts }: Props): ReactElement {
   return (
     <div className="py-6 mx-auto text-center divide-y divide-black">
       <h1 className="py-6 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-6xl">
         What We Have Done.
       </h1>
       <div className="flex flex-col mx-auto">
-        {post.posts.map((d: PostData) => (
-          <Imagecard
+        {posts.map((d: PostData) => (
+          <ImageCard
             key={d.title}
             title={d.title}
             description={d.description}
@@ -35,12 +31,13 @@ export default function Projects({ post }: Props): ReactElement {
   );
 }
 
-export const getStaticProps: GetStaticProps =
-  async (): Promise<PropsWrapper> => {
-    const post = await getMeta(PROJECTS_DIRECTORY, 0);
-    return {
-      props: {
-        post,
-      },
-    };
+export const getStaticProps: GetStaticProps = async (): Promise<
+  GetStaticPropsResult<Props>
+> => {
+  const posts = await getPage(PROJECTS_DIRECTORY, 0);
+  return {
+    props: {
+      posts,
+    },
   };
+};

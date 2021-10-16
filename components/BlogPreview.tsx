@@ -1,41 +1,39 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { ReactElement, useEffect, useState } from "react";
-import useSWR from "swr";
+import { ReactElement } from "react";
 
-import { PageData, PostData } from "../lib/posts";
+import { PostData } from "../lib/posts";
 import CodeBlock from "./CodeBlock";
 import Date from "./Date";
+import Pagination from "./Pagination";
 
-const components = {
+type Props = {
+  posts: PostData[];
+  currentPageNumber: number;
+  maxPageNumber: number;
+  baseUrl: string;
+};
+
+const mdxComponents = {
   code: CodeBlock,
 };
 
-export default function BlogPreview(page: any): ReactElement {
-  const router = useRouter();
-  const [pageIndex, setPageIndex] = useState(0);
-
-  const fetcher = (...args: Parameters<typeof fetch>) =>
-    fetch(...args).then((response) => response.json());
-  console.log(page.posts);
-
-  // The API URL includes the page index, which is a React state.
-  const { data } = useSWR(`/api/blog/${pageIndex}`, fetcher, {
-    fallbackData: page.posts,
-  });
-
-  useEffect(() => {
-    if (router.isReady && router.query.page) {
-      setPageIndex(Number(router.query.page));
-    }
-  }, []);
-
+export default function BlogPreview({
+  posts,
+  currentPageNumber,
+  maxPageNumber,
+  baseUrl,
+}: Props): ReactElement {
   return (
     <div className="container mx-auto w-1/3">
-      {data.posts.map((post: PostData) => (
+      <Pagination
+        baseUrl={baseUrl}
+        currentPageNumber={currentPageNumber}
+        maxPageNumber={maxPageNumber}
+      ></Pagination>
+      {posts.map((post: PostData) => (
         <div className="py-6" key={post.title}>
-          <Link href={post.path + post.slug} passHref>
+          <Link href={"/" + post.path + post.slug} passHref replace>
             <h1 className="cursor-pointer text-3xl font-bold">{post.title}</h1>
           </Link>
           <div className="divide-y divide-black dark:divide-white">
@@ -45,42 +43,20 @@ export default function BlogPreview(page: any): ReactElement {
             <div className="prose dark:prose-dark py-4">
               <MDXRemote
                 {...(post.excerpt as MDXRemoteSerializeResult)}
-                components={components}
+                components={mdxComponents}
               />
             </div>
           </div>
-          <Link href={post.path + post.slug}>
+          <Link href={"/" + post.path + post.slug} replace>
             <a className="underline text-violet-600">Read more...</a>
           </Link>
         </div>
       ))}
-
-      <div className="flex flex-row">
-        <button
-          className={`${pageIndex === 0 ? "hidden" : ""}`}
-          onClick={() => {
-            setPageIndex(pageIndex - 1);
-            router.push("?page=" + (pageIndex - 1), undefined, {
-              shallow: true,
-            });
-          }}
-        >
-          Previous
-        </button>
-        <button
-          className={`w-full flex justify-end ${
-            pageIndex === data.maxPages - 1 ? "hidden" : ""
-          }`}
-          onClick={() => {
-            setPageIndex(pageIndex + 1);
-            router.push("?page=" + (pageIndex + 1), undefined, {
-              shallow: true,
-            });
-          }}
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        baseUrl={baseUrl}
+        currentPageNumber={currentPageNumber}
+        maxPageNumber={maxPageNumber}
+      ></Pagination>
     </div>
   );
 }

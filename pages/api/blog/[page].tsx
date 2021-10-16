@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { POSTS_DIRECTORY } from "../../../lib/constants";
-import { getMeta } from "../../../lib/posts";
+import { getPage } from "../../../lib/posts";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,7 +11,7 @@ export default async function handler(
     query: { page },
   } = req;
 
-  const posts = await getMeta(POSTS_DIRECTORY, Number(page));
+  const posts = await getPage(POSTS_DIRECTORY, Number(page));
 
   res.status(200).json(posts);
 }

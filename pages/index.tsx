@@ -1,36 +1,39 @@
-import { GetStaticProps } from "next";
+import { GetStaticProps, GetStaticPropsResult } from "next";
 import { ReactElement } from "react";
-import { SWRConfig } from "swr";
 
 import BlogPreview from "../components/BlogPreview";
 import { POSTS_DIRECTORY } from "../lib/constants";
-import { getMeta, PageData } from "../lib/posts";
+import { getPage, getTotalPages, PostData } from "../lib/posts";
 
-type PropsWrapper = {
-  readonly props: Posts;
+type Props = {
+  posts: PostData[];
+  maxPageNumber: number;
 };
 
-type Posts = {
-  readonly page: PageData;
-};
+const BLOG_PAGES_URL = "/blog/page";
 
-//TODO fix typing
-export default function Home({ page }: any): ReactElement {
+export default function Home({ posts, maxPageNumber }: Props): ReactElement {
   return (
     <>
-      <SWRConfig value={page}>
-        <BlogPreview posts={page} />
-      </SWRConfig>
+      <BlogPreview
+        posts={posts}
+        currentPageNumber={0}
+        maxPageNumber={maxPageNumber}
+        baseUrl={BLOG_PAGES_URL}
+      ></BlogPreview>
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps =
-  async (): Promise<PropsWrapper> => {
-    const page = await getMeta(POSTS_DIRECTORY, 0);
-    return {
-      props: {
-        page,
-      },
-    };
+export const getStaticProps: GetStaticProps = async (): Promise<
+  GetStaticPropsResult<Props>
+> => {
+  const posts = await getPage(POSTS_DIRECTORY, 0);
+  const maxPageNumber = getTotalPages(POSTS_DIRECTORY);
+  return {
+    props: {
+      posts,
+      maxPageNumber,
+    },
   };
+};

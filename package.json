@@ -26,8 +26,7 @@
     "preact-render-to-string": "^5.1.19",
     "react": "npm:@preact/compat@^17.0.2",
     "react-dom": "npm:@preact/compat@^17.0.2",
-    "react-syntax-highlighter": "^15.4.4",
-    "swr": "^1.0.1"
+    "react-syntax-highlighter": "^15.4.4"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^11.1.2",
