@@ -91,7 +91,6 @@ export function getPostData(directory: string, fileName: string) {
 }
 
 export function sortPosts(posts: PostData[]) {
-  console.log(posts[0].date);
   posts.sort((i, j) => (parseISO(i.date) > parseISO(j.date) ? 1 : -1));
   return posts;
 }
