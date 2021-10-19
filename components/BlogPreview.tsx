@@ -10,7 +10,7 @@ import Pagination from "./Pagination";
 type Props = {
   posts: PostData[];
   currentPageNumber: number;
-  maxPageNumber: number;
+  totalPageNumber: number;
   baseUrl: string;
 };
 
@@ -21,7 +21,7 @@ const mdxComponents = {
 export default function BlogPreview({
   posts,
   currentPageNumber,
-  maxPageNumber,
+  totalPageNumber,
   baseUrl,
 }: Props): ReactElement {
   return (
@@ -29,7 +29,7 @@ export default function BlogPreview({
       <Pagination
         baseUrl={baseUrl}
         currentPageNumber={currentPageNumber}
-        maxPageNumber={maxPageNumber}
+        totalPageNumber={totalPageNumber}
       ></Pagination>
       {posts.map((post: PostData) => (
         <div className="py-6" key={post.title}>
@@ -55,7 +55,7 @@ export default function BlogPreview({
       <Pagination
         baseUrl={baseUrl}
         currentPageNumber={currentPageNumber}
-        maxPageNumber={maxPageNumber}
+        totalPageNumber={totalPageNumber}
       ></Pagination>
     </div>
   );

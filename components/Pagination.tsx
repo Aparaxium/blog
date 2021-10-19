@@ -2,13 +2,13 @@ import Link from "next/link";
 
 type Props = {
   currentPageNumber: number;
-  maxPageNumber: number;
+  totalPageNumber: number;
   baseUrl: string;
 };
 
 export default function Pagination({
   currentPageNumber,
-  maxPageNumber,
+  totalPageNumber,
   baseUrl,
 }: Props) {
   return (
@@ -24,7 +24,7 @@ export default function Pagination({
         <Link href={baseUrl + "/" + `${currentPageNumber + 1}`} passHref>
           <button
             className={`${
-              currentPageNumber === maxPageNumber - 1 ? "hidden" : ""
+              currentPageNumber === totalPageNumber - 1 ? "hidden" : ""
             }`}
           >
             Next

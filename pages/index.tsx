@@ -7,18 +7,18 @@ import { getPage, getTotalPages, PostData } from "../lib/posts";
 
 type Props = {
   posts: PostData[];
-  maxPageNumber: number;
+  totalPageNumber: number;
 };
 
 const BLOG_PAGES_URL = "/blog/page";
 
-export default function Home({ posts, maxPageNumber }: Props): ReactElement {
+export default function Home({ posts, totalPageNumber }: Props): ReactElement {
   return (
     <>
       <BlogPreview
         posts={posts}
         currentPageNumber={0}
-        maxPageNumber={maxPageNumber}
+        totalPageNumber={totalPageNumber}
         baseUrl={BLOG_PAGES_URL}
       ></BlogPreview>
     </>
@@ -29,11 +29,11 @@ export const getStaticProps: GetStaticProps = async (): Promise<
   GetStaticPropsResult<Props>
 > => {
   const posts = await getPage(POSTS_DIRECTORY, 0);
-  const maxPageNumber = getTotalPages(POSTS_DIRECTORY);
+  const totalPageNumber = getTotalPages(POSTS_DIRECTORY);
   return {
     props: {
       posts,
-      maxPageNumber,
+      totalPageNumber,
     },
   };
 };
