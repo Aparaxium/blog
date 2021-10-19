@@ -1,4 +1,9 @@
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from "next";
+import {
+  GetStaticPaths,
+  GetStaticPathsResult,
+  GetStaticProps,
+  GetStaticPropsResult,
+} from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
@@ -32,20 +37,21 @@ export default function Project({ post }: Props): ReactElement {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const fileNames = getFileNames(PROJECTS_DIRECTORY);
-  const paths = fileNames.map((fileName) => {
+export const getStaticPaths: GetStaticPaths =
+  async (): Promise<GetStaticPathsResult> => {
+    const fileNames = getFileNames(PROJECTS_DIRECTORY);
+    const paths = fileNames.map((fileName) => {
+      return {
+        params: {
+          slug: path.parse(fileName).name,
+        },
+      };
+    });
     return {
-      params: {
-        slug: path.parse(fileName).name,
-      },
+      paths,
+      fallback: false,
     };
-  });
-  return {
-    paths,
-    fallback: false,
   };
-};
 
 export const getStaticProps: GetStaticProps = async ({
   params,

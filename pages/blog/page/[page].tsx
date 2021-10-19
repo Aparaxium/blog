@@ -1,4 +1,9 @@
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from "next";
+import {
+  GetStaticPaths,
+  GetStaticPathsResult,
+  GetStaticProps,
+  GetStaticPropsResult,
+} from "next";
 import { useRouter } from "next/router";
 import path from "path";
 import { ReactElement } from "react";
@@ -32,25 +37,26 @@ export default function Blog({
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = getTotalPages(POSTS_DIRECTORY);
-  const li = [];
+export const getStaticPaths: GetStaticPaths =
+  async (): Promise<GetStaticPathsResult> => {
+    const pages = getTotalPages(POSTS_DIRECTORY);
+    const li = [];
 
-  for (let i = 0; i < pages; i++) {
-    li.push(i);
-  }
-  const paths = li.map((page) => {
+    for (let i = 0; i < pages; i++) {
+      li.push(i);
+    }
+    const paths = li.map((page) => {
+      return {
+        params: {
+          page: page.toString(),
+        },
+      };
+    });
     return {
-      params: {
-        page: page.toString(),
-      },
+      paths,
+      fallback: false,
     };
-  });
-  return {
-    paths,
-    fallback: false,
   };
-};
 
 export const getStaticProps: GetStaticProps = async ({
   params,
