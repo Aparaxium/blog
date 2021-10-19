@@ -6,7 +6,7 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
 
-import { POSTS_PER_PAGE } from "./constants";
+import { DEFAULT_POSTS_PER_PAGE } from "./constants";
 
 export type Post = {
   readonly data: PostData;
@@ -61,7 +61,7 @@ export function getTotalPosts(directory: string): number {
 
 export function getTotalPages(directory: string): number {
   const totalPosts: number = getTotalPosts(directory);
-  return Math.ceil(totalPosts / POSTS_PER_PAGE);
+  return Math.ceil(totalPosts / DEFAULT_POSTS_PER_PAGE);
 }
 
 export function getPostData(directory: string, fileName: string) {
@@ -95,10 +95,14 @@ export function sortPosts(posts: PostData[]) {
   return posts;
 }
 
-function createPage(postData: PostData[], pageNumber: number) {
+function createPage(
+  postData: PostData[],
+  pageNumber: number,
+  postsPerPage: number
+) {
   const slicedPostsData = postData.slice(
-    POSTS_PER_PAGE * Number(pageNumber),
-    POSTS_PER_PAGE * Number(pageNumber) + POSTS_PER_PAGE
+    postsPerPage * Number(pageNumber),
+    postsPerPage * Number(pageNumber) + postsPerPage
   );
 
   return slicedPostsData;
@@ -113,7 +117,8 @@ async function serializePostExcerpts(postData: PostData[]) {
 
 export async function getPage(
   directory: string,
-  pageNumber?: number
+  pageNumber?: number,
+  postsPerPage: number = DEFAULT_POSTS_PER_PAGE
 ): Promise<PostData[]> {
   // Get file names
   const fileNames: string[] = getFileNames(directory);
@@ -126,7 +131,7 @@ export async function getPage(
   const sortedPostsData = sortPosts(postsData);
 
   if (pageNumber) {
-    const page = createPage(sortedPostsData, pageNumber);
+    const page = createPage(sortedPostsData, pageNumber, postsPerPage);
     const serializedPage = await serializePostExcerpts(page);
     return serializedPage;
   }

@@ -19,6 +19,6 @@ export const footerLinks = [
   { icon: IconBrandYoutube, href: "https://www.youtube.com" },
 ];
 
-export const POSTS_PER_PAGE = 2;
+export const DEFAULT_POSTS_PER_PAGE = 2;
 
 export const DEFAULT_IMAGE = "/images/default.jpg";
