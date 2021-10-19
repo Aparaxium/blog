@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 
+//TODO only works on netlify with proper configuration.
 export default function ContactForm(): ReactElement {
   return (
     <div className="flex flex-col items-center justify-center">
