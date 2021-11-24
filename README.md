@@ -1,1 +1,1 @@
-[assert.cat](assert.cat)
+[https://assert.cat/](https://assert.cat/)
