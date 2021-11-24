@@ -23,11 +23,11 @@ const mdxComponents = {
 
 export default function Blog({ post }: Props): ReactElement {
   return (
-    <div className="py-6 mx-auto divide-y divide-black">
+    <div className="py-6 mx-auto divide-y divide-black md:w-1/2 w-full p-6">
       <h1 className="py-6 text-3xl font-extrabold tracking-tight text-center sm:text-4xl md:text-6xl">
         {post.data.title}
       </h1>
-      <div className="flex-col mx-auto prose dark:prose-dark">
+      <div className="flex-col mx-auto prose dark:prose-dark max-w-none">
         <MDXRemote
           {...(post.content as MDXRemoteSerializeResult)}
           components={mdxComponents}
