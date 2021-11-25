@@ -1,10 +1,11 @@
 import { useTheme } from "next-themes";
 import { ReactElement, useEffect, useState } from "react";
-import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
+//TODO use async, need to find out why tree shaking is not working
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
   prism,
   vscDarkPlus,
-} from "react-syntax-highlighter/dist/cjs/styles/prism";
+} from "react-syntax-highlighter/dist/esm/styles/prism";
 
 type Props = {
   className: string;
