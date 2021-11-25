@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "SET NODE_OPTIONS=--openssl-legacy-provider && next dev ",
-    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && next build",
-    "start": "SET NODE_OPTIONS=--openssl-legacy-provider && next start",
+    "dev": "ext dev",
+    "build": "next build",
+    "start": "next start",
     "fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "analyze": "SET NODE_OPTIONS=--openssl-legacy-provider && cross-env ANALYZE=true next build",
+    "analyze": "cross-env ANALYZE=true next build",
     "test": "jest"
   },
   "dependencies": {
